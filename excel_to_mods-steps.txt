@@ -1,0 +1,149 @@
+README file for "ingest-prep.sh"
+
+#########################
+# DEV TO DO
+# Make one variable OBJECT_TYPE (book|serial) and let that trigger configuration settings.
+# Find out if you can ingest MODS with a newspaper issue ingest packet.
+# Currently, MODS files have to be ingested manually. Manage > Datastreams > MODS > replace.
+#
+# PURPOSE:
+# To prepares a directory structured as required by the Islandora batch zip file ingest module.
+# The directory structure in then automatically (or manually) compressed into single zip file
+# that can be directly ingested into Islandora as either a book object or as a
+# newspaper issue.
+#
+# BOOKS:
+# If this script is used to prepare directories for the Book Solution Pack, it
+# requires that there be a MODS file in addition to the TIFF files.
+#
+# NEWSPAPERS:
+# In the case of newspapers, the newspaper title object and the issue objects must
+# already exist in Islandora.
+# In the case of newspaper issues, no MODS files are ingested because the issue
+# object presumable already has one. The MODS file can be ingested manually.
+#
+# For more info about the book batch module, see:
+# https://github.com/Islandora/islandora_book_batch
+#
+# PREPARATING THE INPUT DIRECTORIES/FILES:
+# Create these four sub-directories under the directory where the .sh script,
+# islandora-book-prep.sh, will be run from:
+# - input
+# - mods
+# - output
+# - ids
+# - zips
+#
+# MODIFYING THE SCRIPT FOR A SPECIFIC PROJECT
+# 1. Set the path for the project at "SET PROJECT PATH".
+# 2. Set options for whether processing books or serials.
+#    Books need TIFF files renamed at OBJ.tif, serials do not (configure "SET TIFF NAME")
+#    Books can be uploaded with MODS, serials (currently) cannot (See "GET MODS" in the script).
+# 3. Set whether zip files are to be created at "SET ZIP".
+
+# The "input" directory holds sub-directories that contain the page-level TIFF files
+# for each book/issue to be processed.
+# Make sure there is one directory for each book (or serial issue) and each directory should
+# contains all the TIFF files for that item. These image files can be named in any way,
+# but they must display in the order they are to be ingested.
+#
+# input
+#   |_bei-m001
+#   | |_yhm-spe-bei-m001_s001.tif
+#   | |_yhm-spe-bei-m001_s002.tif
+#   | |_yhm-spe-bei-m001_s003.tif
+#   |
+#   |_bei-m023a
+#     |_yhm-spe-bei-m023a_s001.tif
+#     |_yhm-spe-bei-m023a_s002.tif
+#     |_yhm-spe-bei-m023a_s003.tif
+#
+# For books (not serials issues), you can include the processing of MODS XML files,
+# be sure that the core name of the mods file exactly matches the name of the sub-directory
+# where the objects TIFF files are located.
+# [It does NOT have the match the core name of the image files.]
+#
+# input
+#   |_bei-m001
+#     |_yhm-spe-bei-m001_s001.tif
+#     |_yhm-spe-bei-m001_s002.tif
+# mods
+#   |_bei-m001.xml
+#
+# The "ids" directory holds a single text file that contains a list of the core names of
+# of the objects to be processed. This core name must match both 1) the name of the directory
+# where the image files are located and 2) the name of the MODS XML file (if you are processing
+# a book object). I usually create this from a DOS command line: dir > files.txt
+#
+# ids.txt [example listing]
+# - bei-m001
+# - bei-m023a
+#
+# OUTPUT directory:
+# The "output" directory is where the output of this script will go before it is all zipped.
+# The directories in the OUTPUT directory are then zipped in separate zip files in the zips directory.
+#
+# ZIPS directory
+# Holds zipped versions of each object found in the output directory,.
+# These zip files can be ingested Islandora either from the command line or using the Islandroa GUI.
+#
+# (Local note: If you edit this file, be sure this script file is saved in Unix format with LF not CR/LF.)
+#
+# RUN THE SCRIPT
+# SSH to the server.
+# Run: ./batch-prep-serials.sh
+# 1. Read the input directory and write all the TIFF files to numbered
+# sub-directories in a corresponding id directory in the output directory,
+# (books example, "output/bei-m001/1/OBJ.tif")
+# (issues example, "output/fdi-spw-001-10-07/1/yhm-spe-fdi-spw-001-10-07_s001.tif")
+# 2. Copy the corresponding MODS file to the root of the output/bei-m001 directory
+# as "MODS.xml". (Skipped if the MODS file is not found.)
+# 3a. Books output "output" directory structure
+# output
+#   |_bei-m001
+#   | |_001/OBJ.tif
+#   | |_002/OBJ.tif
+#   | |_003/OBJ.tif
+#   | |_MODS.xml
+#   |
+#   |_bei-m023a
+#     |_001/OBJ.tif
+#     |_002/OBJ.tif
+#     |_MODS.xml
+#
+# 3b. Newspaper Issue output "output" directory structure (no "OBJ" files, no MODS)
+# output
+#   |_fdi-spw-001-10-07
+#   | |_001/yhm-spe-fdi-spw-001-10-07_s001.tif
+#   | |_002/yhm-spe-fdi-spw-001-10-07_s002.tif
+#   | |_003/yhm-spe-fdi-spw-001-10-07_s003.tif
+#   |
+#   |_fdi-spw-001-10-14
+#     |_001/yhm-spe-fdi-spw-001-10-014_s001.tif
+#     |_002/yhm-spe-fdi-spw-001-10-014_s001.tif
+#     |_003/yhm-spe-fdi-spw-001-10-014_s001.tif
+#
+# THE FOLLOWING HAS NOT YET BEEN IMPLEMENTED (DO MANUAL ZIPS FOR NOW)
+# Zip the bei-m001 directory and put into the "zips" directory for ingest
+# into Islandora.
+# To zip more than one book into a single zip file:
+#    1. You can zip the output directory from the root. You must zip just the contents
+# of the directory.
+# zips
+#   |_bei-m001.zip
+#   |_bei-m023a.zip
+#
+# Ideally the zip file would combine more than one object when the total size is less that
+# the Islandora ingest limit of 1024 MB (=1 GB), but I haven't found a way to do that.
+# So for now, is you use the zip routine in this script it will create a zip file for each
+# object. If that is unacceptable, comment out the "CONFIGURE ZIP" routine and create the
+# zip files manually.so they do not exceed 1GB.
+#
+# After creating the zip files ingest the first one into Islandora to ensure it ingests properly.
+# Also check the formatting of the MDOS record (Manually ingest the associated MODS record if necessary.)
+#
+# Enhancements
+# Test if a directory exists before writing one.
+
+Y:\Peters-working-area\xslt\xslt-devel\excel_to_mods-steps.txt
+
