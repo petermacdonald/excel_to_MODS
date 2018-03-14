@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2018-01-11T21:18:55Z</responseDate>
+    <request>http://communalsocieties.hamilton.edu/oai2/oai.php</request>
+    <GetRecord>
+        <record>
+            <header>
+                <identifier>oai:communalsocieties.hamilton.edu:hamLibCom_42795</identifier>
+                <datestamp>2017-12-22T21:15:59Z</datestamp>
+                <setSpec>hamLibCom_Bishop_Hill_root</setSpec>
+            </header>
+            <metadata>
+                <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+                    <dc:title>Account of financial notes</dc:title>
+                    <dc:subject>Promissory notes--Collecting of accounts</dc:subject>
+                    <dc:subject>Hedstrom, NilsRingstrom, J.Anderson, W.R.Angstrom, J.Peterson, J.</dc:subject>
+                    <dc:description>Original digital object name: yhm-spe-bhc-mss-note-01</dc:description>
+                    <dc:type>StillImage</dc:type>
+                    <dc:type>Text</dc:type>
+                    <dc:type>Ephemera</dc:type>
+                    <dc:type>Handwritten Ephemera</dc:type>
+                    <dc:format>2 images</dc:format>
+                    <dc:identifier>hamLibCom:42795</dc:identifier>
+                    <dc:identifier>local: yhm-spe-bhc-mss-note-01</dc:identifier>
+                    <dc:language>English</dc:language>
+                    <dc:relation>Bishop Hill Colony</dc:relation>
+                    <dc:relation>Communal Societies Collection</dc:relation>
+                    <dc:relation>Hamilton College Library Digital Collections</dc:relation>
+                    <dc:rights>There are no restrictions on access to this resource.</dc:rights>
+                    <dc:rights>Made available in accordance with the conditions of Creative Commons Public Domain Mark 1.0 (https://creativecommons.org/publicdomain/mark/1.0/).</dc:rights>
+                    <dc:identifier>http://communalsocieties.hamilton.edu/islandora/object/hamLibCom%3A42795</dc:identifier>
+                </oai_dc:dc>
+            </metadata>
+        </record>
+    </GetRecord>
+</OAI-PMH>
